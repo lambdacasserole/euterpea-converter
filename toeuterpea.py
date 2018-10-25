@@ -60,7 +60,7 @@ def euterpea_constr (note):
             output += delimiter
             component = music21.note.Note(pitch.nameWithOctave)
             component.quarterLength = note.quarterLength
-            component += euterpea_constr(component)
+            output += euterpea_constr(component)
             delimiter = ', '
         return output + '])'
     else:
