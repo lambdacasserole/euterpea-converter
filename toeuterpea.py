@@ -53,10 +53,21 @@ def euterpea_constr (note):
     Returns:
         str: The Euterpea note constructor in Haskell.
     """
-    name = euterpea_name(note)
-    octave = str(note.octave)
-    length = euterpea_len(note)
-    return '(' + name + ' ' +  octave + ' ' + length + ')'
+    if note.isChord:
+        output = '(chord ['
+        delimiter = ''
+        for pitch in note.pitches:
+            output += delimiter
+            component = music21.note.Note(pitch.nameWithOctave)
+            component.quarterLength = note.quarterLength
+            component += euterpea_constr(component)
+            delimiter = ', '
+        return output + '])'
+    else:
+        name = euterpea_name(note)
+        octave = str(note.octave)
+        length = euterpea_len(note)
+        return '(' + name + ' ' +  octave + ' ' + length + ')'
 
 
 # Ensure argument list is correct length.
